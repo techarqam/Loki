@@ -42,14 +42,17 @@
     overflow: hidden;
     white-space: nowrap;
     float: left;
-
 }
-
+.chek{
+    display: none;
+}
 .candidate-card:hover {
     transform: scale(1.1);
     transition: all .2s ease-in-out;
 }
-
+.candidate-card:hover .chek{
+    display: block;
+}
 .selected-card {
     background: #6d7fcc;
     border-color: white;

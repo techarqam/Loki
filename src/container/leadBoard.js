@@ -21,7 +21,7 @@ class LeadBoard extends Component {
 
 
   render() {
-    const { items, stages, selected, cardSelect } = this.props;
+    const { items, stages, selected, displayLead,cardSelect } = this.props;
     return (
       <div className='leadboard' >
         <List
@@ -32,7 +32,7 @@ class LeadBoard extends Component {
           bordered={false}
           dataSource={stages}
           renderItem={stage => (<List.Item>
-            <LeadColumn selected={selected} cardSelect={cardSelect} cardDroped={this.cardDroped} stage={stage} items={items && items.filter(e => { return (e.stage._id === stage._id) })} ></LeadColumn>
+            <LeadColumn selected={selected} cardSelect={cardSelect} cardDroped={this.cardDroped} displayLead={displayLead} stage={stage} items={items && items.filter(e => { return (e.stage._id === stage._id) })} ></LeadColumn>
           </List.Item>)}
         >
         </List>

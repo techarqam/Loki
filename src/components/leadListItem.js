@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { ItemTypes } from '../constants/typeConstants';
 import { DragSource, DropTarget } from 'react-dnd';
+import { Checkbox } from 'antd';
 const classNames = require('classnames');
 
 const cardSource = {
@@ -43,8 +44,8 @@ function dropCollect(connect, monitor) {
 
 class LeadListItem extends Component {
   render() {
-    const { item, isDragging, connectDragSource, connectDropTarget, isOver, cardSelect, selected } = this.props;
-    const { firstName, lastName,city,gender } = item.contact;
+    const { item, isDragging, connectDragSource, connectDropTarget, displayLead, isOver, cardSelect, selected } = this.props;
+    const { firstName, lastName, } = item.contact;
     let isSelected = selected.findIndex((select) => { return select === item._id }) !== -1;
     let cardClass = classNames({
       'candidate-card': true,
@@ -55,12 +56,10 @@ class LeadListItem extends Component {
 
     return (
       connectDropTarget(connectDragSource(
-        <div onClick={() => { cardSelect(item._id) }} className={cardClass}  >
+        <div onClick={() => { displayLead(item._id) }} className={cardClass}  >
+          <Checkbox onChange={() => { cardSelect(item._id) }} className="chek"  ></Checkbox>
           <h5> {firstName} </h5>
           <p> {lastName} </p>
-          <p> {city} </p>
-          <p> {gender} </p>
-
         </div>
       )
       ));

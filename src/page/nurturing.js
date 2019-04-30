@@ -20,11 +20,18 @@ class Nurturing extends Component {
       leadsCount: [],
       selectedCourse: null,
       selected: [],
-      cities: [],
-      selCity: null,
+      displayUser: false
     };
 
+  }
 
+  displayLead(id) {
+    // this.state.displayUser = true;
+    // this.setState({ displayUser: true });
+    console.log(id)
+  }
+  hideLead() {
+    this.setState({ displayUser: false });
   }
 
   componentDidMount() {
@@ -48,40 +55,29 @@ class Nurturing extends Component {
       .then((result) => { this.setState({ categoryList: result.data }); },
         (error) => { this.setState({ error }); }
       )
-
   }
 
   selectCourse = (selectedCourse) => {
     this.setState({ selectedCourse: selectedCourse });
+
     restClient.request("get", ApiEndpoint.leadList, { sort: "order", courses: selectedCourse._id }, { key: 'leads', expireAt: new Date() })
       .then((result) => { this.setState({ leadList: result.data }); },
         (error) => { this.setState({ error }); }
       )
-
   }
-
-  getCities() {
-
-    let tempCities = this.state.leadList;
-
-
-    console.log(this.cities)
-  }
-
-
 
   updateItems = (item) => {
     this.setState({ leadList: item });
   }
 
   cardSelect = (leadId) => {
-
     let idx = this.state.selected.findIndex(id => { return id === leadId })
     if (idx === -1)
       this.setState({ selected: [...this.state.selected, leadId] })
     else
       this.setState({ selected: [...this.state.selected.slice(0, idx), ...this.state.selected.slice(idx + 1)] })
   }
+
 
   showAddForm = () => {
     this.setState({
@@ -110,14 +106,14 @@ class Nurturing extends Component {
   }
 
   render() {
-    const { error, stageList, leadList, courselist, selCity, cities, selectedCourse, leadsCount, categoryList } = this.state;
+    const { error, stageList, leadList, courselist, displayUser, selCity, selGender, selectedCourse, leadsCount, categoryList } = this.state;
 
-    this.cities = leadList.map((course) => {
-      let tempObj = course.contact;
-      // console.log(tempObj.city)
-      return tempObj.city;
-    })
-    // console.log(this.cities)
+
+    let cities = leadList.map((lead) => { let tempObj = lead.contact; return tempObj.city; })
+    cities = cities.filter(function (value, index, array) { return array.indexOf(value) == index; });
+
+    let genders = leadList.map((lead) => { let tempObj = lead.contact; return tempObj.gender; })
+    genders = genders.filter(function (value, index, array) { return array.indexOf(value) == index; });
 
 
 
@@ -136,40 +132,71 @@ class Nurturing extends Component {
       </Menu>
     );
 
-
-    const citiesList = (
+    const citiesMenu = (
       <Menu onClick={(menu) => {
-        let tempSelCity = this.cities.filter((course) => { return course === menu.key });
-        console.log(this.tempSelCity)
-        // this.selCity =tempSelCity;
-
+        this.setState({ selCity: menu.key });
       }} >
         {
-          this.cities.map((course) => {
-            return <Menu.Item key={course} >
-              {course}
+
+          cities.map((city) => {
+            return <Menu.Item key={city} >
+              {city}
+            </Menu.Item>
+          })
+        }
+      </Menu>
+    );
+    const gendersMenu = (
+      <Menu onClick={(menu) => {
+        this.setState({ selGender: menu.key });
+      }} >
+        {
+
+          genders.map((gender) => {
+            return <Menu.Item key={gender} >
+              {gender}
             </Menu.Item>
           })
         }
       </Menu>
     );
 
+
+
+
     let isMultiselected = this.state.selected.length > 0 ? true : false;
     let isSingleSelected = this.state.selected.length === 1 ? true : false;
     return (
       <div>
-        <h3>nurturing</h3>
+        <h3>Nurturing</h3>
         <Drawer
           title="Add new candidate"
           width={720}
           onClose={this.hideAddForm}
           visible={this.state.showAddForm}
         >
-          <Form leadData={!this.state.isNew ? leadList.find(item => { return item._id === this.state.selected[0] }) : null} courselist={courselist} stageList={stageList} categoryList={categoryList} selectedCourse={selectedCourse} onSave={this.onSave}   ></Form>
+          <Form leadData={!this.state.isNew ? leadList.find(item => { return item._id === this.state.selected[0] }) : null}
+            courselist={courselist} stageList={stageList} categoryList={categoryList} selectedCourse={selectedCourse} onSave={this.onSave}   >
+          </Form>
         </Drawer>
+
+        <Drawer
+          title="Candidate Details"
+          width={720}
+          closable={true}
+          // onClose={this.hideLead()}
+          visible={this.displayUser}
+        >
+          <p>Some contents...</p>
+          <p>Some contents...</p>
+          <p>Some contents...</p>
+        </Drawer>
+
         <Dropdown overlay={courseMenu}>
           <div className="courseSelector" >   {selectedCourse ? selectedCourse.name : "select course"}      <Icon type="down" /> </div>
         </Dropdown>
+
+
         {selectedCourse ? <div><ButtonGroup className='commandbar' >
           <Button onClick={this.showAddForm} className='command' ><Icon type="plus" /> Add    </Button>
           <Button className='command' > <Icon type="export" /> Export </Button>
@@ -177,12 +204,21 @@ class Nurturing extends Component {
           {isMultiselected ? <Button className='command' > <Icon type="delete" /> Delete </Button> : null}
           {isMultiselected ? <Button className='command' ><Icon type="solution" /> Run campaign </Button> : null}
 
-          <Dropdown overlay={citiesList}>
-            <div className="citySelector" >   {selCity ? selCity : "select course"}         <Icon type="down" /> </div>
+
+          <Dropdown overlay={citiesMenu}>
+            <div className="citySelector" >  {selCity ? selCity : "Select City"}      <Icon type="down" /> </div>
           </Dropdown>
 
+          <Dropdown overlay={gendersMenu}>
+            <div className="citySelector" >   {selGender ? selGender : "Select Gender"}      <Icon type="down" /> </div>
+          </Dropdown>
+
+
+
+
+
         </ButtonGroup>
-          <LeadBoard stages={stageList} items={leadList} updateItems={this.updateItems} cardSelect={this.cardSelect} selected={this.state.selected} >
+          <LeadBoard stages={stageList} items={leadList} updateItems={this.updateItems} displayLead={this.displayLead} cardSelect={this.cardSelect} selected={this.state.selected} >
           </LeadBoard>
         </div> :
           <CourseList select={this.selectCourse} leadsCount={leadsCount} categoryList={categoryList} items={courselist} >
