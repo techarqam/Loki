@@ -1,0 +1,73 @@
+.courseSelector {
+    max-width: 50vh;
+}
+.citySelector {
+    max-width: 50vh;
+    padding-top: 40px;
+}
+
+.boardColumn {
+    padding: 2%;
+    margin: 2%
+}
+
+.grow {
+    transition: all .2s ease-in-out;
+}
+
+.grow:hover {
+    transform: scale(1.1);
+}
+
+
+.commandbar {
+    padding: 1%;
+    border-radius: 2%;
+    align-content: stretch;
+}
+
+.command {
+    margin: 0% 0% 0% 0%;
+}
+
+.candidate-card {
+    padding: 4%;
+    margin: 4%;
+    height: 20vh;
+    width: 25vh;
+    border-radius: 4%;
+    border-style: solid;
+    border-color: lightgrey;
+    border-width: thick;
+    overflow: hidden;
+    white-space: nowrap;
+    float: left;
+
+}
+
+.candidate-card:hover {
+    transform: scale(1.1);
+    transition: all .2s ease-in-out;
+}
+
+.selected-card {
+    background: #6d7fcc;
+    border-color: white;
+}
+
+.selected-card h5,
+.selected-card p,
+.isOver-card h5,
+.isOver-card p,
+.dragged-card h5,
+.dragged-card p {
+    color: white;
+}
+
+.isOver-card {
+    background: yellowgreen;
+}
+
+.dragged-card {
+    background: grey;
+}

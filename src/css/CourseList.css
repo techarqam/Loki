@@ -1,0 +1,52 @@
+.course-header {
+  text-align: left;
+  padding: 2% 2%;
+  margin: 0% 2% 0% 2%;
+  border-radius: 4%;
+}
+
+.course-goal {
+  background: #6d7fcc;
+  padding: 2% 2%;
+  margin: 0% 2% 0% 2%;
+  border-radius: 4%;
+  text-align: center
+}
+
+.course-goal-not-Set {
+  padding: 2% 2%;
+  margin: 0% 2% 0% 2%;
+  border-radius: 4%;
+  border-style: dotted;
+  text-align: center
+}
+
+.course-lead-category {
+  display: flex;
+  text-align: center
+}
+
+.course-lead-category div {
+  padding: 0% 4%;
+  margin: 0% 2% 0% 2%;
+  text-align: center;
+}
+
+.course-goal h3 {
+  color: #fff
+}
+
+.course-goal p {
+  color: #fff
+}
+
+.course-lead {
+  border: olive;
+  border-width: thick;
+}
+
+.course-action {
+  padding: 2% 0% 0% 0%;
+  margin: 0% 2% 0% 2%;
+  text-align: center;
+}
